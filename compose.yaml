@@ -1,0 +1,41 @@
+name: caddy
+services:
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    # environment:
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    networks:
+      macvlan_net:
+        ipv4_address: ${CONTAINER_IP}
+    volumes:
+      - /DATA/AppData/Caddy/config:/config
+      - /DATA/AppData/Caddy/data:/data
+      - /DATA/AppData/Caddy/site:/srv
+    ports:
+      - '80:80'
+      - '443:443'
+networks:
+  macvlan_net:
+    external: true
+    name: my_macvlan_network
+# ZimaOS/CasaOS Specific Metadata
+x-casaos:
+  architectures:
+    - amd64
+    - arm64
+  main: caddy
+  author: Michael McNairy
+  category: WEB
+  icon: https://cdn.brandfetch.io/id6urH6yOB/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1769785145609
+  title:
+    en_us: Caddy
+  tagline:
+    en_us: Self-host an easy to configure web server.
+  description:
+    en_us: Caddy Server is a fast, modern, open-source web server written in Go.
+networks:
+  caddy:
+    external: false
